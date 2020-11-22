@@ -6,9 +6,24 @@
 <meta charset="ISO-8859-1">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <title>Insert title here</title>
+<style>
+thead {color: blue;
+	background-color:#8cfaf6;
+	border:1;
+	padding: 5}
+
+table, th, td {
+  border: 1px solid black;
+  padding: 15px;
+  text-align: center;
+  border-collapse: collapse;
+}
+tr:hover {background-color: #f5f5f5;}
+</style>
+
 </head>
 <body>
-<table id="lista" border=1>
+<table id="lista" >
 	<thead>
 		<tr>
 			<th>Hakusana:</th>
@@ -16,14 +31,14 @@
 			<th><input type="button" value=" hae " id="hakunappi"></th>
 		</tr>
 		<tr>
-			<th>ID</th>
+			
 			<th>Etunimi</th>
 			<th>Sukunimi</th>
 			<th>Puhelin</th>
 			<th>e-mail</th>
 		</tr>
 	</thead>
-	<tbody>
+	<tbody >
 	</tbody>
 </table>
 
@@ -50,7 +65,7 @@ function haeAsiakkaat() {
 		$.each(result.asiakkaat, function(i, field){
 			var htmlStr;
 			htmlStr+="<tr>";
-			htmlStr+="<td>"+field.asiakas_id+"</td>";
+
 			htmlStr+="<td>"+field.etunimi+"</td>";
 			htmlStr+="<td>"+field.sukunimi+"</td>";
 			htmlStr+="<td>"+field.puhelin+"</td>";
