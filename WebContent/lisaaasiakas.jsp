@@ -9,18 +9,27 @@
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
 <title>Asiakkaat-lisäys</title>
 <style>
+table {border-collapse: collapse;}
+
 thead {color: blue;
 	background-color:#8cfaf6;
-	border:1;
+	text-align: left;
 	padding: 5}
 
-table, th, td {
+tbody {
   border: 1px solid black;
   padding: 15px;
-  text-align: center;
-  border-collapse: collapse;
+
 }
-table tbody tr:hover {background-color: #f5f5f5;}
+
+
+button {
+  padding: 10px;
+  text-align: center;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+  }
 </style>
 </head>
 <body>
@@ -28,13 +37,13 @@ table tbody tr:hover {background-color: #f5f5f5;}
 		<table>
 			<thead>
 				<tr>
-					<th colspan="5"><span id="takaisin">Takaisin listaukseen</span></th>
+					<th colspan="5"><h2>Lisää uuden asiakkaan tiedot</h2></th>
 				</tr>
 				<tr>
-					<th>Etunimi</th>
-					<th>Sukunimi</th>
-					<th>Puhelin</th>
-					<th>Sähköposti</th>
+					<th>Etunimi:</th>
+					<th>Sukunimi:</th>
+					<th>Puhelin:</th>
+					<th>Sähköposti:</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -48,7 +57,10 @@ table tbody tr:hover {background-color: #f5f5f5;}
 			</tbody>
 		</table>
 	</form>
-	<div id='ilmo'></div>
+	<div>
+		<h2 id='ilmo'> </h2> 
+		<button id="takaisin">Takaisin listaukseen</button>
+	</div>
 </body>
 <script>
 $(document).ready(function() {
@@ -100,17 +112,15 @@ $(document).ready(function() {
 function lisaaTiedot(){
 	var formJsonStr = formDataJsonStr($("#tiedot").serializeArray());
 	$.ajax({url:"Asiakkaat", data:formJsonStr, type:"POST", dataType:"json", success:function(result){
-		console.log(result);
+		console.log(formJsonStr);
 		if(result.response==0){
 			$("#ilmo").html("Asiakkaan lisääminen epäonnistui.");
 		}else if(result.response==1){
-			$("#ilmo").html("Asiakas lisätty");
-			$("#etunimi", "#sukumi", "#puhelin", "#sposti").val("")
+			$("#ilmo").html("Asiakkaan tiedot lisätty");
+			$("#etunimi", "#sukunimi", "#puhelin", "#sposti").val("")
 		}
 	}});
 }
 </script>
-
-
 
 </html>

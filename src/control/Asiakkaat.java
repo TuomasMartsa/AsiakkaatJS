@@ -78,8 +78,6 @@ public class Asiakkaat extends HttpServlet {
 		System.out.println("polku: "+pathInfo);
 		String poistettavaId = pathInfo.replace("/", "");
 		System.out.println(poistettavaId);
-		//int poistettava_id= parseInt(poistettavaId);
-		//System.out.println(poistettava_id);
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
 		Dao dao = new Dao();
