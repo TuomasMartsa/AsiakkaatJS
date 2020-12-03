@@ -133,6 +133,59 @@ public class Dao {
 		System.out.println(paluuArvo);
 		return paluuArvo;
 	}
+	
+	public Asiakas etsiAsiakas(String asiakas_id) {
+		Asiakas asiakas = null;
+		sql = "SELECT * FROM Asiakkaat WHERE asiakas_id=?";
+		int asiakasInt = Integer.parseInt(asiakas_id);
+		try {
+			con=yhdista();
+			if(con !=null) {
+				stmtPrep = con.prepareStatement(sql);
+				stmtPrep.setInt(1, asiakasInt);
+				rs = stmtPrep.executeQuery();
+				if(rs.isBeforeFirst()) {
+					rs.next();
+					asiakas = new Asiakas();
+					asiakas.setAsiakas_id(rs.getInt(1));
+					asiakas.setEtunimi(rs.getString(2));
+					asiakas.setSukunimi(rs.getString(3));
+					asiakas.setPuhelin(rs.getString(4));
+					asiakas.setSposti(rs.getString(5));
+				}
+			}
+			con.close();
+			System.out.println("Yhteys suljettu");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return asiakas;
+		}
+	
+		public boolean muutaAsiakas(Asiakas asiakas, int asiakas_id) {
+		boolean paluu=true;
+		System.out.println(asiakas);
+		sql="UPDATE Asiakkaat SET etunimi=?, sukunimi=?, puhelin=?, sposti=? WHERE asiakas_id=?";
+		try {
+			con = yhdista();
+			System.out.println("yhdistetty-muutos");
+			stmtPrep=con.prepareStatement(sql);
+			stmtPrep.setString(1, asiakas.getEtunimi());
+			stmtPrep.setString(2, asiakas.getSukunimi());
+			stmtPrep.setString(3, asiakas.getPuhelin());
+			stmtPrep.setString(4, asiakas.getSposti());
+			stmtPrep.setInt(5, asiakas_id);
+			stmtPrep.executeUpdate();
+			System.out.println(sql);
+			con.close();
+			System.out.println("Muutos - Yhteys suljettu");
+		} catch (Exception e) {
+			e.printStackTrace();
+			paluu=false;
+		}
+		return paluu;
+	}
+	
 
 
 	

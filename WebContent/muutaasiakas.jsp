@@ -7,7 +7,7 @@
 <script src="scripts/main.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
-<title>Asiakkaat-lis‰ys</title>
+<title>Asiakkaat-muutos</title>
 <style>
 table {border-collapse: collapse;}
 
@@ -37,7 +37,7 @@ button {
 		<table>
 			<thead>
 				<tr>
-					<th colspan="5"><h2>Lis‰‰ uuden asiakkaan tiedot</h2></th>
+					<th colspan="5"><h2>Muuta asiakkaan tiedot</h2></th>
 				</tr>
 				<tr>
 					<th>Etunimi:</th>
@@ -53,12 +53,14 @@ button {
 					<td><input type="text" name="sukunimi" id="sukunimi"></td>
 					<td><input type="text" name="puhelin" id="puhelin"></td>
 					<td><input type="text" name="sposti" id="sposti"></td>	
-					<td><input type="submit" id="tallenna" value="Lis‰‰"></td>
+					<td><input type="submit" id="tallenna" value="Muuta"></td>
+					<td><input type="hidden" name="asiakas_id" id="asiakas_id"></td>
 			</tbody>
 		</table>
+		
 	</form>
 	<div>
-		<h2 id='ilmo'> </h2> 
+		<h4 id='ilmo'> </h4> 
 		<button id="takaisin">Takaisin listaukseen</button>
 	</div>
 </body>
@@ -67,6 +69,18 @@ $(document).ready(function() {
 	$("#takaisin").click(function(){
 		document.location="listaaAsiakkaat.jsp";
 	});
+	
+	var haku = requestURLParam("asiakas_id");
+	console.log(haku);
+	
+	$.ajax({url:"Asiakkaat/haeyksi/"+haku, type:"GET", dataType:"json", success:function(result) {
+			$("#asiakas_id").val(result.asiakas_id);
+			$("#etunimi").val(result.etunimi);
+			$("#sukunimi").val(result.sukunimi);
+			$("#puhelin").val(result.puhelin);
+			$("#sposti").val(result.sposti);
+	}});
+	
 	$("#tiedot").validate({
 		rules: {
 			etunimi: {
@@ -96,7 +110,8 @@ $(document).ready(function() {
 				minlength: "Lis‰‰ sukunimi"
 			},
 			puhelin: {
-				required: "Lis‰‰ puh.nro"
+				required: "Lis‰‰ puh.nro",
+				minlength: "Numeron on oltava v‰hint‰‰n 5 merkki‰"
 			},
 			sposti: {
 				required: "Lis‰‰ s‰hkˆposti",
@@ -104,21 +119,22 @@ $(document).ready(function() {
 			}
 		},
 		submitHandler: function(form) {
-			lisaaTiedot();
+			muutaTiedot();
 		}
 	});
 	$("#etunimi").focus(); 
 });
 
-function lisaaTiedot(){
+function muutaTiedot(){
 	var formJsonStr = formDataJsonStr($("#tiedot").serializeArray());
-	$.ajax({url:"Asiakkaat", data:formJsonStr, type:"POST", dataType:"json", success:function(result){
-		console.log(formJsonStr);
+	console.log(formJsonStr);
+	$.ajax({url:"Asiakkaat", data:formJsonStr, type:"PUT", dataType:"json", success:function(result){
+		
 		if(result.response==0){
-			$("#ilmo").html("Asiakkaan lis‰‰minen ep‰onnistui.");
+			$("#ilmo").html("Asiakkaan p‰ivitt‰minen ep‰onnistui.");
 		}else if(result.response==1){
-			$("#ilmo").html("Asiakkaan tiedot lis‰tty");
-			$("#etunimi", "#sukunimi", "#puhelin", "#sposti").val("")
+			$("#ilmo").html("Asiakkaan tiedot muutettu");
+			$("#asiakas_id", "#etunimi", "#sukunimi", "#puhelin", "#sposti").val("")
 		}
 	}});
 }

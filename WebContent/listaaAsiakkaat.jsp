@@ -24,12 +24,15 @@ button {
 	cursor: pointer;
 	}
 .poista {
-	background-color: #eb4034;
-	color: #ffffff;
-	cursor: pointer;}
+	color: #eb4034;
+	cursor: pointer;
+	}
 .lisaa {
 	padding: 20px;
 }
+.muuta {
+	text-decoration: none;
+	}
 .lisaanappi {
   padding: 10px;
   text-align: center;
@@ -46,12 +49,12 @@ button {
 <table id="lista" >
 	<thead>
 		<tr>
-			<th colspan="6"><h1>Asiakkaat</h1><button class='lisaanappi' id="uusiAsiakas">Lis‰‰ uusi</button></th>
+			<th colspan="7"><h1>Asiakkaat</h1><button class='lisaanappi' id="uusiAsiakas">Lis‰‰ uusi</button></th>
 		</tr>
 		<tr>
 			<th colspan="2">Hakusana:</th>
 			<th colspan="3"><input type="text" id="hakusana"></th>
-			<th><button id="hakunappi">Hae</button></th>
+			<th colspan="2"><button id="hakunappi">Hae</button></th>
 		</tr>
 		<tr>
 			<th>ID</th>
@@ -59,7 +62,7 @@ button {
 			<th>Sukunimi</th>
 			<th>Puhelin</th>
 			<th>e-mail</th>
-			<th></th>
+			<th colspan="2"></th>
 		</tr>
 	</thead>
 	<tbody >
@@ -100,7 +103,8 @@ function haeAsiakkaat() {
 			htmlStr+="<td>"+field.sukunimi+"</td>";
 			htmlStr+="<td>"+field.puhelin+"</td>";
 			htmlStr+="<td>"+field.sposti+"</td>";
-			htmlStr+="<td><button class='poista' onclick=poista('"+field.asiakas_id+"')>Poista</button></td>";
+			htmlStr+="<td><a class='muuta' href='muutaasiakas.jsp?asiakas_id="+field.asiakas_id+"'>Muuta</a></td>";
+			htmlStr+="<td><a class='poista' onclick=poista('"+field.asiakas_id+"')>Poista</a></td>";
 			$("#lista tbody").append(htmlStr);
 		});
 	}});
