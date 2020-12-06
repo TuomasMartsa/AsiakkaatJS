@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<script src="scripts/main.js"></script>
+<style>
+table {border-collapse: collapse;}
+
+thead {color: blue;
+	background-color:#8cfaf6;
+	text-align: left;
+	padding: 5}
+
+tbody {
+  border: 1px solid black;
+  padding: 15px;
+}
+button {
+  padding: 10px;
+  text-align: center;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+  }
+</style>
+<title>Asiakkaan lisäys</title>
+</head>
+<body onkeydown="tutkiKey(event)">
+	<form id="tiedot">
+		<table>
+			<thead>
+				<tr>
+					<th colspan="5"><h2>Lisää uuden asiakkaan tiedot</h2></th>
+				</tr>
+				<tr>
+					<th>Etunimi:</th>
+					<th>Sukunimi:</th>
+					<th>Puhelin:</th>
+					<th>Sähköposti:</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input type="text" name="etunimi" id="etunimi"></td>
+					<td><input type="text" name="sukunimi" id="sukunimi"></td>
+					<td><input type="text" name="puhelin" id="puhelin"></td>
+					<td><input type="text" name="sposti" id="sposti"></td>	
+					<td><input type="button" id="tallenna" value="Lisää" onclick="lisaaTiedot()"></td>
+			</tbody>
+		</table>
+		<h2 id='ilmo'> </h2> 
+		<a href="listaaasiakkaat.html">Takaisin listaukseen</a>
+	</form>
+
+</body>
+
+<script>
+function tutkiKey(event){
+	if(event.keyCode==13){
+		lisaaTiedot();
+	}
+}
+function emailIsValid (email) {
+	  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+	}
+function lisaaTiedot(){	
+	var ilmo="";
+	if(document.getElementById("etunimi").value.length<1){
+		ilmo="Etunimi on liian lyhyt";		
+	}else if(document.getElementById("sukunimi").value.length<1){
+		ilmo="Sukunimi on liian lyhyt";		
+	}else if(document.getElementById("puhelin").value.length<5){
+		ilmo="Puhelinnumerossa on oltava vähintään 5 numeroa";				
+	}else if (email = emailIsValid(document.getElementById("sposti").value)!=true){
+		ilmo="Sähköpostiosoite on virheellinen"
+	}
+	if(ilmo!=""){
+		document.getElementById("ilmo").innerHTML=ilmo;
+		setTimeout(function(){ document.getElementById("ilmo").innerHTML=""; }, 5000);
+		return;
+	}
+
+	var formJsonStr=formDataJsonStr(document.getElementById("tiedot"));
+	
+	
+	fetch("Asiakkaat",{
+	      method: 'POST',
+	      body:formJsonStr
+	    })
+	.then( function (response) {
+		return response.json()
+	})
+	.then( function (responseJson) {
+		var vastaus = responseJson.response;		
+		if(vastaus==0){
+			document.getElementById("ilmo").innerHTML= "Asiakkaan lisääminen epäonnistui";
+    	}else if(vastaus==1){	        	
+    		document.getElementById("ilmo").innerHTML= "Asiakkaan tiedot on tallennettu";			      	
+		}
+		setTimeout(function(){ document.getElementById("ilmo").innerHTML=""; }, 5000);
+	});	
+
+}
+</script>
+</html>

@@ -15,3 +15,4 @@ function formDataJsonStr(formArray) {
 	}
 	return JSON.stringify(returnArray);
 }
+
