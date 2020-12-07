@@ -16,3 +16,12 @@ function formDataJsonStr(formArray) {
 	return JSON.stringify(returnArray);
 }
 
+function emailIsValid (email) {
+	  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+	}
+function siivoa(teksti){
+	teksti=teksti.replace("<","");
+	teksti=teksti.replace(";","");
+	teksti=teksti.replace("'","''");
+	return teksti;
+}

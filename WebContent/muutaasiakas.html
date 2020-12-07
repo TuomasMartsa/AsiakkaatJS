@@ -7,7 +7,7 @@
 table {border-collapse: collapse;}
 
 thead {color: blue;
-	background-color:#8cfaf6;
+	background-color:#d7d3f5;
 	text-align: left;
 	padding: 5
 	}
@@ -78,9 +78,7 @@ fetch("Asiakkaat/haeyksi/" + asiakas_id,{
 	document.getElementById("sposti").value = responseJson.sposti;	
 	document.getElementById("asiakas_id").value = responseJson.asiakas_id;	
 });	
-function emailIsValid (email) {
-	  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-	}
+
 function muutaTiedot(){	
 	var ilmo="";
 	if(document.getElementById("etunimi").value.length<1){
@@ -97,10 +95,10 @@ function muutaTiedot(){
 		setTimeout(function(){ document.getElementById("ilmo").innerHTML=""; }, 5000);
 		return;
 	}
-	var email = document.getElementById("sposti").value;
-	console.log(email);
-	var email = emailIsValid(document.getElementById("sposti").value);
-	console.log(email);
+	document.getElementById("etunimi").value=siivoa(document.getElementById("etunimi").value);
+	document.getElementById("sukunimi").value=siivoa(document.getElementById("sukunimi").value);
+	document.getElementById("puhelin").value=siivoa(document.getElementById("puhelin").value);
+	document.getElementById("sposti").value=siivoa(document.getElementById("sposti").value);	
 
 	var formJsonStr=formDataJsonStr(document.getElementById("tiedot"));
 	
